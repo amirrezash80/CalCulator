@@ -9,20 +9,40 @@ import com.amirreza.calculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val expressionParts = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
-        setContentView(view)
-
+        setContentView(binding.root)
     }
 
     fun DisplayDigits(view: View) {
         val button = view as Button
-        var text:String = binding.textView2.text.toString()
-        text += button.tag.toString()
-        binding.textView2.text = text
+        val buttonText = button.tag.toString()
+
+        if (expressionParts.isEmpty() || "+-*/()".contains(buttonText) || "+-*/()".contains(expressionParts.last())) {
+            expressionParts.add(buttonText)
+        } else {
+            val lastIndex = expressionParts.size - 1
+            expressionParts[lastIndex] = expressionParts[lastIndex] + buttonText
+        }
+
+        binding.textView2.text = expressionParts.joinToString(separator = " ")
+    }
+
+    fun ClearDigits(view: View) {
+        expressionParts.clear()
+        binding.textView2.text = ""
+    }
+
+    fun CalculateDigits(view: View) {
+        val calculation = Expression(expressionParts)
+        val result = calculation.EvaluateExpression()
+        println(result)
+        binding.textView2.text = result.toString()
+        expressionParts.clear()
+        expressionParts.add(result.toString())
     }
 }
 

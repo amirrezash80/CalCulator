@@ -2,7 +2,7 @@ package com.amirreza.calculator
 
 import java.util.Stack
 
-class Expression(var list:MutableList<String>) {
+class Expression(var list: MutableList<String>) {
 
     private fun InfixToPostfix():String{
 
@@ -17,7 +17,7 @@ class Expression(var list:MutableList<String>) {
                 result += "$element "
             }
             else if(element == "("){
-                stack.push(element)
+                stack.push(element.toString())
             }
             else if(element == ")"){
                 while(stack.peek() != "(" && stack.isNotEmpty()){
@@ -30,6 +30,7 @@ class Expression(var list:MutableList<String>) {
                 while (stack.isNotEmpty() && precedence(stack.peek()) >= precedence(element)){
                     result += "${stack.pop()} "
                 }
+                stack.push(element)
             }
         }
             while (stack.isNotEmpty()){
@@ -46,36 +47,34 @@ class Expression(var list:MutableList<String>) {
         }
     }
 
-    fun EvaluateExpression(postfix:String):Number{
+    fun EvaluateExpression(): Number {
+        var postfix: String = InfixToPostfix()
         val stack = Stack<Double>()
         var i = 0
-        var number = ""
-        while (i< postfix.length){
-            if(postfix[i] == ' '){
+        while (i < postfix.length) {
+            if (postfix[i].isWhitespace()) {
                 i++
                 continue
             }
-            else if(Character.isDigit(postfix[i])){
-                while (Character.isDigit(postfix[i]) || postfix[i] == '.')
-                {
-                     number += postfix[i]
-                    i++
+            var number = ""
+            if (Character.isDigit(postfix[i]) || postfix[i] == '.') {
+                while (i < postfix.length && (Character.isDigit(postfix[i]) || postfix[i] == '.')) {
+                    number += postfix[i++]
                 }
                 stack.push(number.toDouble())
+                continue  // Continue to the next iteration after processing a number.
             }
-            else{
-                val x = stack.pop()
-                val y = stack.pop()
-                when(postfix[i]){
-                    '*' ->stack.push(x*y)
-                    '/' ->stack.push(x/y)
-                    '-' ->stack.push(x-y)
-                    '+' ->stack.push(x+y)
-                }
+            // For operators, pop two elements from stack, apply operation, and push the result back.
+            val x = stack.pop()
+            val y = stack.pop()
+            when (postfix[i]) {
+                '*' -> stack.push(y * x)
+                '/' -> stack.push(y / x)
+                '+' -> stack.push(y + x)
+                '-' -> stack.push(y - x)
             }
             i++
         }
-        return if(stack.peek()/stack.peek().toInt() == 1.0) stack.peek().toInt()
-        else stack.peek()
+        return if (stack.peek() % 1.0 == 0.0) stack.peek().toInt() else stack.peek()
     }
 }
