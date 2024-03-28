@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import androidx.core.text.isDigitsOnly
 import com.amirreza.calculator.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val expressionParts = mutableListOf<String>()
-
+    private var dots:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -20,15 +21,34 @@ class MainActivity : AppCompatActivity() {
     fun DisplayDigits(view: View) {
         val button = view as Button
         val buttonText = button.tag.toString()
+        val lastIndex = expressionParts.size - 1
+
+      if(expressionParts.isNotEmpty())
+        if("(".contains(buttonText) && (expressionParts[lastIndex].isDigitsOnly() || expressionParts[lastIndex]==")" ))
+            return
+
 
         if (expressionParts.isEmpty() || "+-*/()".contains(buttonText) || "+-*/()".contains(expressionParts.last())) {
             expressionParts.add(buttonText)
         } else {
-            val lastIndex = expressionParts.size - 1
             expressionParts[lastIndex] = expressionParts[lastIndex] + buttonText
         }
 
         binding.textView2.text = expressionParts.joinToString(separator = " ")
+    }
+
+    fun DisplayDots(view: View){
+        val lastIndex = expressionParts.size - 1
+        val button = view as Button
+        val buttonText = button.tag.toString()
+        println(expressionParts)
+        if (expressionParts.isEmpty() || expressionParts[lastIndex].contains(".")){
+            return
+        }
+        else{
+            expressionParts[lastIndex] = expressionParts[lastIndex] + buttonText
+            binding.textView2.text = expressionParts.joinToString(separator = " ")
+        }
     }
 
     fun ClearDigits(view: View) {
