@@ -11,7 +11,7 @@ import com.amirreza.calculator.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val expressionParts = mutableListOf<String>()
-    private var dots:Boolean = false
+    private var operator:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -23,12 +23,18 @@ class MainActivity : AppCompatActivity() {
         val buttonText = button.tag.toString()
         val lastIndex = expressionParts.size - 1
 
-      if(expressionParts.isNotEmpty())
-        if("(".contains(buttonText) && (expressionParts[lastIndex].isDigitsOnly() || expressionParts[lastIndex]==")" ))
+      if(expressionParts.isNotEmpty()) {
+          if ("(".contains(buttonText) && (expressionParts[lastIndex].isDigitsOnly() || expressionParts[lastIndex] == ")"))
+              return
+          if(!expressionParts[lastIndex].isDigitsOnly() && "%+-*/)".contains(buttonText) && expressionParts[lastIndex]!= ")" && !expressionParts[lastIndex].contains("."))
+              return
+      }
+        else if ("%+-*/)".contains(buttonText))
             return
 
 
-        if (expressionParts.isEmpty() || "+-*/()".contains(buttonText) || "+-*/()".contains(expressionParts.last())) {
+
+        if (expressionParts.isEmpty() || "%+-*/()".contains(buttonText) || "%+-*/()".contains(expressionParts.last())) {
             expressionParts.add(buttonText)
         } else {
             expressionParts[lastIndex] = expressionParts[lastIndex] + buttonText
@@ -52,17 +58,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun ClearDigits(view: View) {
+        operator = false
         expressionParts.clear()
         binding.textView2.text = ""
     }
 
     fun CalculateDigits(view: View) {
-        val calculation = Expression(expressionParts)
-        val result = calculation.EvaluateExpression()
-        println(result)
-        binding.textView2.text = result.toString()
-        expressionParts.clear()
-        expressionParts.add(result.toString())
+
+            val calculation = Expression(expressionParts)
+            val result = calculation.EvaluateExpression()
+            println(result)
+        if(result == -1.23456789) {
+            binding.textView2.text = "خطا در انجام محاسبات"
+            expressionParts.clear()
+            return
+        }
+        else
+            binding.textView2.text = result.toString()
+
+            expressionParts.clear()
+            expressionParts.add(result.toString())
+
+
     }
 }
 
