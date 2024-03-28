@@ -39,9 +39,21 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/buttonPercentage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:onClick="removeDigit"
+                    android:tag="-"
+                    app:icon="@android:drawable/ic_input_delete"
+                    app:iconGravity="textEnd"
+                    app:iconPadding="0dp" />
+
+                <Button
                     android:id="@+id/leftParentheses"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="2"
                     android:onClick="DisplayDigits"
@@ -52,7 +64,7 @@
                 <Button
                     android:id="@+id/RightParentheses"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:onClick="DisplayDigits"
@@ -61,19 +73,9 @@
                     app:toggleCheckedStateOnClick="false" />
 
                 <Button
-                    android:id="@+id/buttonPercentage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:layout_weight="1"
-                    android:onClick="DisplayDigits"
-                    android:tag="%"
-                    android:text="%" />
-
-                <Button
                     android:id="@+id/buttonPlus"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:onClick="DisplayDigits"
@@ -139,7 +141,7 @@
                 <Button
                     android:id="@+id/button4"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:onClick="DisplayDigits"
@@ -150,7 +152,7 @@
                 <Button
                     android:id="@+id/button5"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:onClick="DisplayDigits"
@@ -161,7 +163,7 @@
                 <Button
                     android:id="@+id/button6"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:onClick="DisplayDigits"
@@ -172,7 +174,7 @@
                 <Button
                     android:id="@+id/buttonMulti"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="3dp"
                     android:layout_weight="1"
                     android:onClick="DisplayDigits"
